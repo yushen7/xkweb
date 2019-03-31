@@ -8,16 +8,30 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [{
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'homepage',
+      component: () => import('./views/7ish_HomePage')
+    }, {
+      path: '/ctus',
+      name: 'ctus',
+      components: () => import('./views/7ish_ContactUs')
+
+    }, {
+      path: '/exhibition',
+      name: 'exhibition',
+      components: () => import('./views/7ish_Exhibition')
+    }, {
+      path: '/orgIntro',
+      name: 'orgIntro',
+      components: () => import('./views/mason_OrgIntroduction')
+    }, {
+      path: '/proIntro',
+      name: 'proIntro',
+      components: () => import('./views/mason_ProductIntroduction')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import( /* webpackChunkName: "about" */ './views/About.vue')
+      path: '/ad',
+      name: 'ad',
+      components: () => import('./views/7ish_Advertisement')
     }
   ]
 })
