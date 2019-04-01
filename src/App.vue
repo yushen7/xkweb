@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition>
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -8,7 +10,16 @@
 import HomePage from "@/views/7ish_HomePage";
 export default {
   name: "app",
-  components: { HomePage }
+  created() {
+    this.$router.addRoutes([
+      {
+        path: "*",
+        name: "404",
+        component: () => import("./views/7ish_HomePage")
+      }
+    ]);
+    console.log(this.$router);
+  }
 };
 </script>
 
