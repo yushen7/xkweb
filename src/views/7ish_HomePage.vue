@@ -30,6 +30,7 @@
 
 <script>
 export default {
+  name: "homepage",
   data() {
     return {
       bannerImgUrl: [
@@ -49,17 +50,23 @@ export default {
           imgUrl: require("@/assets/piece-show.png")
         },
         {
+          title: "产品介绍",
+          content: "APP改变校园生活",
+          imgUrl: require("@/assets/pro-intro.png")
+        },
+        {
           title: "推文",
           content: "懂你更多",
           imgUrl: require("@/assets/ad-article.png")
         },
+
         {
           title: "",
           content: "",
-          imgUrl: require("@/assets/ctus-bg.png")
+          imgUrl: require("@/assets/ctus.png")
         }
       ],
-      subPagesPath: ["/orgIntro", "/exhibition", "/ctus", "/proIntro", "/ad"]
+      subPagesPath: ["/orgIntro", "/exhibition", "/proIntro", "/ad", "/ctus"]
     };
   },
   methods: {
@@ -88,7 +95,6 @@ export default {
   position: relative;
   img {
     width: 100%;
-    height: 165px;
   }
 }
 .subpage-item-cover::before {
@@ -119,10 +125,10 @@ export default {
   }
 }
 .van-swipe {
-  height: 105px;
   .van-swipe-item {
     img {
       width: 100%;
+      display: block;
     }
   }
 }
