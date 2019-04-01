@@ -13,25 +13,25 @@ export default new Router({
     }, {
       path: '/ctus',
       name: 'ctus',
-      components: () => import('./views/7ish_ContactUs')
+      component: () => import('./views/7ish_ContactUs.vue')
 
     }, {
       path: '/exhibition',
       name: 'exhibition',
-      components: () => import('./views/7ish_Exhibition')
+      component: () => import('./views/7ish_Exhibition.vue')
     }, {
       path: '/orgIntro',
       name: 'orgIntro',
-      components: () => import('./views/mason_OrgIntroduction')
+      component: () => import('./views/mason_OrgIntroduction')
     }, {
       path: '/proIntro',
       name: 'proIntro',
-      components: () => import('./views/mason_ProductIntroduction')
+      component: () => import('./views/mason_ProductIntroduction')
     },
     {
       path: '/ad',
       name: 'ad',
-      components: () => import('./views/7ish_Advertisement')
+      component: () => import('./views/7ish_Advertisement')
     }
   ]
 })
