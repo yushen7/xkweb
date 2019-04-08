@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .homepage {
   position: relative;
   margin: 10px auto 0;
