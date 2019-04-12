@@ -9,7 +9,10 @@
         title-inactive-color="#666666"
         color="#2a9bfe"
       >
-        <van-tab title="视频"></van-tab>
+        <van-tab title="视频">
+          <Vid/>
+        </van-tab>
+
         <van-tab title="摄影">
           <Phg/>
         </van-tab>
@@ -24,6 +27,7 @@
 <script>
 import Vision from "@/components/exhibition-vision";
 import Phg from "@/components/exhibition-phg";
+import Vid from "@/components/exhibition-video";
 export default {
   name: "exhibition",
   data() {
@@ -33,8 +37,10 @@ export default {
   },
   components: {
     Vision,
-    Phg
-  }
+    Phg,
+    Vid
+  },
+  mounted() {}
 };
 </script>
 
