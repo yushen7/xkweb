@@ -18,7 +18,20 @@ export default new Router({
     }, {
       path: '/exhibition',
       name: 'exhibition',
-      component: () => import('./views/7ish_Exhibition.vue')
+      component: () => import('./views/7ish_Exhibition.vue'),
+      children: [{
+        path: '/exhibition_views/exhibition-phg',
+        name: 'exPhg',
+        component: () => import('./views/exhibition_views/exhibition-phg')
+      }, {
+        path: '/exhibition_views/exhibition-video',
+        name: 'exVideo',
+        component: () => import('./views/exhibition_views/exhibition-video')
+      }, {
+        path: '/exhibition_views/exhibition-vision',
+        name: 'exVision',
+        component: () => import('./views/exhibition_views/exhibition-vision')
+      }, ]
     }, {
       path: '/orgIntro',
       name: 'orgIntro',
@@ -32,6 +45,7 @@ export default new Router({
       path: '/ad',
       name: 'ad',
       component: () => import('./views/7ish_Advertisement')
-    }
+    },
+
   ]
 })

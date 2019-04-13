@@ -3,7 +3,7 @@
     <div class="banner">
       <van-swipe :autoplay="3000" indicator-color="#60a6ff">
         <van-swipe-item v-for="(url,index) in bannerImgUrl" :key="index">
-          <img v-lazy="url">
+          <img :src="url">
         </van-swipe-item>
       </van-swipe>
     </div>

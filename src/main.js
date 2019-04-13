@@ -1,26 +1,28 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import 'vant/lib/swipe/style';
-import 'vant/lib/swipe-item/style';
-import 'vant/lib/tab/style';
-import 'vant/lib/tabs/style';
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import "vant/lib/swipe/style";
+import "vant/lib/swipe-item/style";
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+import axios from "axios";
 import {
-  Tab,
-  Tabs,
   Swipe,
-  SwipeItem,
-  Lazyload
-} from 'vant';
-import 'vant/lib/';
-
+  SwipeItem
+} from "vant";
+import {
+  Menu,
+  MenuItem,
+  Loading
+} from "element-ui";
+Vue.use(Loading.directive);
+Vue.use(Menu);
+Vue.use(MenuItem);
+Vue.use(VueAwesomeSwiper, /* { default global options } */ )
 Vue.config.productionTip = false;
-Vue.use(Tab).use(Tabs);
 Vue.use(Swipe).use(SwipeItem);
-Vue.use(Lazyload, {
-  observer: true
-});
+Vue.prototype.$http = axios;
 new Vue({
   router,
-  render: h => h(App),
-}).$mount('#app')
+  render: h => h(App)
+}).$mount("#app");
