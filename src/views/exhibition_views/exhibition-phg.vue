@@ -1,16 +1,32 @@
 <template>
   <div class="exhibition-phg exhibition-main">
     <div class="phg-one"></div>
-    <div class="phg-list">
-      <div class="phg-list-item" v-for="(item,index) in srcs" :key="index" :style="itemStyles">
+    <div class="phg-list" v-if="photos.length">
+      <div
+        class="phg-list-item"
+        v-for="(item, index) in photos"
+        :key="index"
+        :style="itemStyles"
+      >
         <div class="item-img-wrapper">
-          <img class="item-img-content" :src="item" alt>
+          <img
+            class="item-img-content"
+            :src="['http://kuoteo.com' + item.thumbnail]"
+            v-image-preview="['http://kuoteo.com' + item.media_path]"
+            preview-title-enable="true"
+            preview-nav-enable="true"
+            :alt="item.title"
+          />
         </div>
         <div class="item-info">
-          <img class="item-info-avatar" :src="authors[index]" alt="zzz">
+          <img
+            class="item-info-avatar"
+            :src="['http://kuoteo.com' + item.thum_header]"
+            :alt="item.title"
+          />
           <div class="item-info-content">
-            <p class="item-info-author">Zephyr</p>
-            <p class="item-info-tag">摄影/摆拍/etc</p>
+            <p class="item-info-author">{{ item.author }}</p>
+            <p class="item-info-tag">{{ item.tag }}</p>
           </div>
         </div>
       </div>
@@ -20,30 +36,10 @@
 
 <script>
 export default {
-  name: "exhibition-phg",
+  name: 'exhibition-phg',
   data() {
     return {
-      srcs: [
-        require("@/assets/photo-imgs/huangjiafu_photo1.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo1.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo2.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo3.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo4.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo5.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo6.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo7.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo8.jpg"),
-        require("@/assets/photo-imgs/huangjiafu_photo9.jpg"),
-        require("@/assets/photo-imgs/moleling_photo5.jpg"),
-        require("@/assets/photo-imgs/moleling_photo6.jpg"),
-        require("@/assets/photo-imgs/moleling_photo7.jpg"),
-        require("@/assets/photo-imgs/moleling_photo8.jpg"),
-        require("@/assets/photo-imgs/moleling_photo9.jpg")
-      ],
-      authors: [
-        require("@/assets/photo-imgs/huangjiafu.jpg"),
-        require("@/assets/photo-imgs/moleling.jpg")
-      ],
+      photos: [],
       itemStyles: []
     };
   },
@@ -51,17 +47,24 @@ export default {
     updateSrcs() {
       const count = 2;
       for (let i = 0; i < count; i++) {
-        const src = require("@/assets/photo-imgs/moleling_photo9.jpg");
-        this.srcs.push(src);
       }
     },
     scrollHandler() {
       document.body.scrollHeight - window.innerHeight - window.scrollY <= 120 &&
         this.updateSrcs();
+    },
+    ajax() {
+      const url = this.$http
+        .get('http://kuoteo.com/api/photoshow')
+        .then(res => {
+          console.log(res.data.photo);
+          this.photos = res.data.photo;
+        });
     }
   },
   mounted() {
-    document.addEventListener("scroll", this.scrollHandler);
+    this.ajax();
+    document.addEventListener('scroll', this.scrollHandler);
   }
 };
 </script>
