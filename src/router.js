@@ -9,16 +9,16 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'homepage',
-      component: () => import('./views/7ish_HomePage')
+      component: () => import('./views/HomePage')
     }, {
       path: '/ctus',
       name: 'ctus',
-      component: () => import('./views/7ish_ContactUs.vue')
+      component: () => import('./views/ContactUs.vue')
 
     }, {
       path: '/exhibition',
       name: 'exhibition',
-      component: () => import('./views/7ish_Exhibition.vue'),
+      component: () => import('./views/Exhibition.vue'),
       children: [{
         path: '/exhibition_views/exhibition-phg',
         name: 'exPhg',
@@ -35,17 +35,21 @@ export default new Router({
     }, {
       path: '/orgIntro',
       name: 'orgIntro',
-      component: () => import('./views/mason_OrgIntroduction')
+      component: () => import('./views/chooseSection')
     }, {
       path: '/proIntro',
       name: 'proIntro',
-      component: () => import('./views/mason_ProductIntroduction')
+      component: () => import('./views/ProductIntroduction')
     },
     {
       path: '/ad',
       name: 'ad',
-      component: () => import('./views/7ish_Advertisement')
+      component: () => import('./views/Advertisement')
     },
-
+    {
+      path: '/OrgIntroduction',
+      name: "OrgIntroduction",
+      component: () => import('./views/OrgIntroduction')
+    }
   ]
 })

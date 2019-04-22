@@ -7,15 +7,15 @@
 </template>
 
 <script>
-import HomePage from "@/views/7ish_HomePage";
+import HomePage from '@/views/HomePage';
 export default {
-  name: "app",
+  name: 'app',
   created() {
     this.$router.addRoutes([
       {
-        path: "*",
-        name: "404",
-        component: () => import("./views/7ish_HomePage")
+        path: '*',
+        name: '404',
+        component: () => import('./views/HomePage')
       }
     ]);
     console.log(this.$router);
@@ -28,7 +28,7 @@ html {
   background-color: #e2e2e2;
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
