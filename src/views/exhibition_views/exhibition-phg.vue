@@ -1,27 +1,45 @@
 <template>
-  <div class="exhibition-phg exhibition-main">
+  <div
+    class="exhibition-phg exhibition-main"
+    @touchstart.capture="ontouchstart"
+    @touchmove.capture="ontouchmove"
+  >
     <div class="phg-one"></div>
-    <div class="phg-list" v-if="photos.length">
+    <van-image-preview
+      v-model="preview.show"
+      :images="preview.images"
+      :start-position="preview.startPosition"
+      :lazy-load="preview.lazyLoad"
+      @change="previewOnChangeHandler"
+    >
+    </van-image-preview>
+    <div
+      class="phg-list"
+      v-if="photos.length"
+      v-loading.fullscreen.lock="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
       <div
         class="phg-list-item"
         v-for="(item, index) in photos"
+        @click="showBig"
         :key="index"
-        :style="itemStyles"
       >
         <div class="item-img-wrapper">
           <img
             class="item-img-content"
-            :src="['http://kuoteo.com' + item.thumbnail]"
-            v-image-preview="['http://kuoteo.com' + item.media_path]"
-            preview-title-enable="true"
-            preview-nav-enable="true"
             :alt="item.title"
+            :index="index"
+            v-lazy="item.thumbnail"
+            @load.capture.prevent="imageOnLoadHandler"
           />
         </div>
         <div class="item-info">
           <img
             class="item-info-avatar"
-            :src="['http://kuoteo.com' + item.thum_header]"
+            v-lazy="item.thum_header"
             :alt="item.title"
           />
           <div class="item-info-content">
@@ -39,32 +57,118 @@ export default {
   name: 'exhibition-phg',
   data() {
     return {
+      tmpPhotos: [],
       photos: [],
-      itemStyles: []
+      preview: {
+        images: [],
+        show: false,
+        startPosition: 0,
+        lazyLoad: true
+      },
+      scrollData: {
+        start: {
+          x: 0,
+          y: 0,
+          t: Date.now()
+        },
+        end: {
+          x: 0,
+          y: 0,
+          t: 0
+        },
+        LIMIT: 80
+      },
+      rendFlag: true,
+      rendCount: 8,
+      startI: 0,
+      loading: true,
+      imageOnLoadCount: 0,
+      LASTe: null
     };
   },
   methods: {
-    updateSrcs() {
-      const count = 2;
-      for (let i = 0; i < count; i++) {
+    imageOnLoadHandler(e) {
+      if (e.target.getAttribute('lazy') !== 'loaded') return;
+
+      ++this.imageOnLoadCount;
+      //因为有些图片不在视界内，会被v-lazy指令判定为loading不加载，所以此时this.rendcount - 2治标不治本=-=
+      if (this.imageOnLoadCount >= this.rendCount - 2) {
+        this.imageOnLoadCount = 0;
+        this.loading = false;
+      }
+      console.log(this.imageOnLoadCount);
+    },
+    ontouchstart(e) {
+      if (!this.rendFlag) {
+        return;
+      }
+      if (e.type === 'touchstart') {
+        this.scrollData.start.y = e.targetTouches[0].clientY;
       }
     },
-    scrollHandler() {
-      document.body.scrollHeight - window.innerHeight - window.scrollY <= 120 &&
-        this.updateSrcs();
+    ontouchmove(e) {
+      if (
+        !this.rendFlag ||
+        (Date.now() - this.scrollData.start.t) / 1000 <= 1 ||
+        this.loading
+      ) {
+        return;
+      }
+      if (e.type === 'touchmove') {
+        const y = e.targetTouches[0].clientY;
+        const isMoveToBottom = y - this.scrollData.start.y > 0 ? false : true;
+        const isLimit =
+          document.body.scrollHeight - window.innerHeight - window.scrollY <=
+          this.scrollData.LIMIT
+            ? true
+            : false;
+        this.scrollData.start.y = y;
+        if (isMoveToBottom && isLimit) {
+          this.updateSrcs();
+        }
+      }
+    },
+    showBig(e) {
+      e.preventDefault();
+      this.preview.show = true;
+      this.preview.startPosition = parseInt(e.target.getAttribute('index'));
+    },
+    updateSrcs() {
+      if (this.startI >= this.tmpPhotos.length) {
+        this.rendFlag = false;
+        return;
+      }
+      this.loading = true;
+      this.photos.push(
+        ...this.tmpPhotos.slice(this.startI, this.startI + this.rendCount)
+      );
+      this.startI += this.rendCount;
+      this.scrollData.start.t = Date.now();
     },
     ajax() {
-      const url = this.$http
-        .get('http://kuoteo.com/api/photoshow')
-        .then(res => {
-          console.log(res.data.photo);
-          this.photos = res.data.photo;
-        });
+      const url = '/photoshow';
+      const prefix = this.$prefixUrl;
+      this.$http.get(url).then(res => {
+        const photos = res.data.photo;
+        for (let i of photos) {
+          i.thum_header = prefix + i.thum_header;
+          i.thumbnail = prefix + i.thumbnail;
+          i.media_path = prefix + i.media_path;
+          this.preview.images.push(i.media_path);
+        }
+        this.tmpPhotos = photos;
+        this.updateSrcs();
+      });
+    },
+    previewOnChangeHandler(index) {
+      this.imageIndex = index;
     }
   },
   mounted() {
     this.ajax();
-    document.addEventListener('scroll', this.scrollHandler);
+  },
+  beforeDestroy() {
+    document.removeEventListener('scroll', this.scrollHandler);
   }
 };
 </script>

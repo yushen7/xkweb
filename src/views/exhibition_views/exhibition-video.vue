@@ -8,7 +8,11 @@
           @slidePrevTransitionStart="callHsySlidePrev"
           @slideNextTransitionStart="callHsySlideNext"
         >
-          <swiper-slide class="banner-slide-item" v-for="(item,index) in videoIngs" :key="index">
+          <swiper-slide
+            class="banner-slide-item"
+            v-for="(item, index) in videoIngs"
+            :key="index"
+          >
             <div class="banner-video-wrapper">
               <video-player
                 class="video-palyer-box"
@@ -18,6 +22,8 @@
               ></video-player>
             </div>
           </swiper-slide>
+          <!-- <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div> -->
         </swiper>
       </div>
 
@@ -26,38 +32,57 @@
           <!-- slides -->
           <swiper-slide
             class="content-slide-item"
-            v-for="(hsyitm,hsyindex) in videoHeaders"
-            :key="hsyindex"
-            :id="['ex-video-content'+hsyindex]"
+            v-for="(current, currentIndex) in videoHeaders"
+            :key="currentIndex"
+            :id="['ex-video-content' + currentIndex]"
           >
             <div class="video-info">
               <div class="author-info">
-                <img
+                <div
                   class="author-info-avatar"
-                  :src="['http://kuoteo.com'+hsyitm[0].media_path]"
-                  alt
+                  :style="{
+                    backgroundImage: 'url(' + current[0].media_path + ')'
+                  }"
                 >
+                  <!-- <img class="avatar-img" :src="current[0].media_path" alt /> -->
+                </div>
+
                 <div class="author-info-content">
-                  <p class="author-name">{{hsyitm[0].title}}</p>
-                  <p class="author-tag">{{videoIngs[hsyindex][0].author}}</p>
+                  <p class="author-name">{{ current[0].title }}</p>
+                  <p class="author-tag">
+                    {{ videoIngs[currentIndex][0].author }}
+                  </p>
                 </div>
               </div>
               <div class="video-intro">
-                <p class="video-intro-title">{{videoIngs[hsyindex][0].title}}</p>
-                <p class="video-intro-content">{{videoIngs[hsyindex][0].content}}</p>
+                <p class="video-intro-title">
+                  {{ videoIngs[currentIndex][0].title }}
+                </p>
+                <p class="video-intro-content">
+                  {{ videoIngs[currentIndex][0].content }}
+                </p>
               </div>
             </div>
             <div class="video-history hsy-list">
-              <div class="hsy-item" v-for="(item,index) in videoJumps[0]" :key="index">
+              <div
+                class="hsy-item"
+                v-for="(item, index) in videoJumps[0]"
+                :key="index"
+              >
                 <div class="hsy-item-img-wrapper">
-                  <a :href="['http://kuoteo.com'+item.url]">
-                    <img class="hsy-item-cover" :src="['http://kuoteo.com'+item.media_path]" alt>
+                  <a :href="item.url">
+                    <img
+                      class="hsy-item-cover"
+                      :src="item.media_path"
+                      v-lazy="item.media_path"
+                      alt
+                    />
                   </a>
                 </div>
                 <div class="hsy-item-content">
-                  <p class="hsy-item-intro">{{item.content}}</p>
+                  <p class="hsy-item-intro">{{ item.content }}</p>
                   <div class="hsy-item-tag">
-                    <span class="hsy-item-tag-1">{{item.tag}}</span>
+                    <span class="hsy-item-tag-1">{{ item.tag }}</span>
                     <p class="hsy-item-tag-2"></p>
                   </div>
                 </div>
@@ -73,11 +98,10 @@
 </template>
 
 <script>
-import "video.js/dist/video-js.css";
-
-import { videoPlayer } from "vue-video-player";
+import 'video.js/dist/video-js.css';
+import { videoPlayer } from 'vue-video-player';
 export default {
-  name: "exVideo",
+  name: 'exVideo',
   data() {
     return {
       count: 0,
@@ -85,27 +109,28 @@ export default {
       videoIngs: [],
       videoJumps: [],
       curSwiperOption: {
-        // autoplay: {
-        //   delay: 3000,
-        //   disableOnInteraction: false
-        // },
-        free: false,
-        loop: true,
-        init: false
+        free: true,
+        loop: false,
+        init: false,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
       },
       hsySwiperOption: {
         free: false,
         loop: true,
-        allowTouchMove: false,
-        effect: "flip"
+        allowTouchMove: false
       },
       //video的相关配置
       vpOptions: []
     };
   },
-  beforeCreate() {
+  created() {
+    const url = '/videoshow';
+    const prefix = this.$prefixUrl;
     this.$http
-      .get("http://kuoteo.com/api/videoshow")
+      .get(url)
       .then(res => {
         this.videoHeaders = res.data.video.videoheader;
         this.videoIngs = res.data.video.videoing;
@@ -115,20 +140,28 @@ export default {
           //videoPlayer的初始化
           this.vpOptions.push({
             muted: true,
-            language: "zh_cn",
-            playbackRates: [0.7, 1.0, 1.5, 2.0],
+            language: 'zh_cn',
+            playbackRates: [0.5, 1.0, 1.5, 2.0],
             sources: [
               {
-                type: "video/mp4",
-                src: "http://kuoteo.com" + item[0].url
+                type: 'video/mp4',
+                src: prefix + item[0].url
               }
             ],
-            poster: "http://kuoteo.com" + item[0].media_path,
+            poster: prefix + item[0].media_path,
             playsinline: true,
-            aspectRatio: "16:9",
+            aspectRatio: '16:9',
             nativeControlsForTouch: true
           });
         });
+        for (let i of this.videoHeaders) {
+          i[0].media_path = prefix + i[0].media_path;
+        }
+        for (let i of this.videoJumps) {
+          for (let j of i) {
+            j.media_path = prefix + j.media_path;
+          }
+        }
       })
       .catch(err => {
         console.log(err);
@@ -147,6 +180,12 @@ export default {
       this.$refs.curSwiper.swiper.init();
     }
   },
+  mounted() {
+    this.$parent.$el.style.overflowX = 'auto';
+  },
+  beforeDestroy() {
+    this.$parent.$el.style.overflowX = 'hidden';
+  },
   components: {
     videoPlayer
   }
@@ -155,12 +194,21 @@ export default {
 
 <style lang="scss" scoped>
 .author-info {
+  display: flex;
   text-align: left;
   .author-info-avatar {
-    display: block;
-    float: left;
     width: 44px;
     height: 44px;
+    margin-right: 5%;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    margin-top: 15px;
+    background-size: cover;
+    background-position: center center;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .author-info-content {
     p:nth-child(1) {
@@ -191,15 +239,15 @@ export default {
   text-align: left;
 }
 .hsy-item {
-  padding-top: 10px;
+  margin: 5px auto;
   height: 80px;
-  border-bottom: 1.2px solid #eee;
+  display: flex;
 }
 .hsy-item-img-wrapper {
-  float: left;
-  width: 28%;
+  box-sizing: border-box;
+  width: 35%;
   height: 66px;
-  padding-right: 10px;
+  padding-right: 5%;
   a {
     img {
       width: 100%;
@@ -210,10 +258,18 @@ export default {
   }
 }
 .hsy-item-content {
+  position: relative;
+  width: 65%;
   font-size: 0.75rem;
+  border-bottom: 1.2px solid #eee;
+  p {
+    margin-top: 5px;
+  }
 }
 .hsy-item-tag {
-  padding-top: 12px;
+  display: flex;
+  position: absolute;
+  bottom: 5px;
   span {
     font-size: 0.75rem;
     color: #3a8ffc;
@@ -227,17 +283,23 @@ export default {
 }
 .banner-video-wrapper {
   display: inline-block;
-  width: 90.67%;
-}
-video {
-  border-radius: 10px;
-  overflow: hidden;
+  width: 100%;
 }
 .swiper-slide {
+  video {
+    border-radius: 20px;
+  }
   transition: all 0.5s ease-in-out;
 }
 .swiper-slide:not(.swiper-slide-active) {
   transform: scale(0.8);
 }
+.video-palyer-box {
+  border-radius: 15px;
+  overflow: hidden;
+}
+.swiper-prev,
+.swiper-next {
+  outline: none;
+}
 </style>
-

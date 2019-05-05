@@ -16,20 +16,15 @@
       @transitionend="onTransitionEnd(index)"
       :key="index"
     >
-      <div @click="choose(item.dec)">
-        <img :src="item.src" />
-      </div>
+      <img :src="item.src" />
     </li>
   </ul>
 </template>
 <script>
-import detectPrefixes from './detect-prefixes.js';
+import detectPrefixes from '../../utilities/detect-prefixes.js';
 import cardOne from '../../assets/card_1bu_03.png';
 import cardTwo from '../../assets/card_2bu_03.png';
 import cardThree from '../../assets/card_3bu_03.png';
-import icon1 from '../../assets/technology.png';
-import icon2 from '../../assets/media.png';
-import icon3 from '../../assets/judge.png';
 export default {
   props: {
     stackinit: {
@@ -42,6 +37,22 @@ export default {
       basicdata: {
         start: {},
         end: {}
+      },
+      simulateClick: {
+        start: {
+          t: 0,
+          pos: {
+            x: 0,
+            y: 0
+          }
+        },
+        end: {
+          t: 0,
+          pos: {
+            x: 0,
+            y: 0
+          }
+        }
       },
       temporaryData: {
         prefixes: detectPrefixes(),
@@ -64,55 +75,13 @@ export default {
       },
       pages: [
         {
-          src: cardOne,
-          dec: {
-            icon: icon1,
-            dec: '技术研发中心下分安卓、iOS及网页三个方向，是星空核心技术所在',
-            section_1: '安卓方向',
-            detail_1:
-              '主要负责安卓的手机应用开发与维护，开发技术讨论社区“觉浅”、开发星校巴、TOT恶搞证件等；',
-            section_2: '网页方向',
-            detail_2:
-              '分为前端与后端，共同开发及维护网页进行，主要工作有快乐班级投票网页开发、办公室预约系统、大数据；',
-            section_3: 'iOS方向',
-            detail_3:
-              '主要针对苹果手机的应用开发与维护，开发星名片简单版及开发iOS恶搞证件。'
-          }
+          src: cardOne
         },
         {
-          src: cardTwo,
-          dec: {
-            icon: icon2,
-            dec: '文化传媒中心下分视觉、视频及摄影三个方向',
-            section_1: '视觉方向',
-            detail_1:
-              '主要负责星空海报设计，体现星空高端设计水平，例如日常的节日banner、新生的作品展、2018的招新设计、2018的毕业季设计及星空网的UI设计',
-            section_2: '视频方向',
-            detail_2:
-              '主要负责星空宣传影片的制作和后期处理，今年新开街坊栏目“同学，你有空吗”',
-            section_3: '摄影方向',
-            detail_3:
-              '主要负责向公众号提供摄影图及培训新人摄影触觉，整体提高星空平面拍摄水平。'
-          }
+          src: cardTwo
         },
         {
-          src: cardThree,
-          dec: {
-            icon: icon3,
-            dec: '运营策划中心下分策划、新媒体及星产品三个方向',
-            section_1: '策划方向',
-            detail_1:
-              '负责办公例如有行政工作及内部事务、策划全校性毕业季活动等。',
-            section_2: '公关方向',
-            detail_2:
-              '主要对内协调各中心的工作，对外加强与组织间的联系，负责形象培训及提升星空形象。',
-            section_3: '新媒体方向',
-            detail_3:
-              '通过公众号星空us及微博@星空us进行推广，是星空对外的宣传平台，助力组织形象与文化建设。',
-            section_4: '产品方向',
-            detail_4:
-              '负责星空产品扣死及现有产品的运营及维护，致力于打造最优的用户体验。'
-          }
+          src: cardThree
         }
       ]
     };
@@ -143,22 +112,20 @@ export default {
     this.$on('prev', () => {
       this.prev();
     });
-    document.addEventListener('touchmove', e => {});
   },
   methods: {
     choose(code) {
-      console.log('code');
       this.$router.push({
-        name: 'OrgIntroduction',
-        params: {
-          id: code
-        }
+        path: 'OrgIntroduction#' + code
       });
-      console.log(code);
-      // console.log(222)
     },
     touchstart(e) {
-      console.log(e.type);
+      if (e.type === 'touchstart') {
+        this.simulateClick.start.pos.x = e.targetTouches[0].clientX;
+        this.simulateClick.start.pos.y = e.targetTouches[0].clientY;
+        this.simulateClick.start.t = Date.now();
+      }
+
       if (this.temporaryData.tracking) {
         return;
       }
@@ -214,6 +181,27 @@ export default {
       }
     },
     touchend(e) {
+      this.simulateClick.end.pos.x = e.changedTouches[0].clientX;
+      this.simulateClick.end.pos.y = e.changedTouches[0].clientY;
+      this.simulateClick.end.t = Date.now();
+      const isMovedX =
+        this.simulateClick.end.pos.x - this.simulateClick.start.pos.x == 0
+          ? false
+          : true;
+      const isMovedY =
+        this.simulateClick.end.pos.y - this.simulateClick.start.pos.y == 0
+          ? false
+          : true;
+      const isFast =
+        (this.simulateClick.end.t - this.simulateClick.start.t) / 1000 <= 0.3
+          ? true
+          : false;
+
+      if (!isMovedX & !isMovedY && isFast) {
+        this.choose(this.temporaryData.currentPage);
+        return;
+      }
+
       this.temporaryData.tracking = false;
       this.temporaryData.animation = true;
       // 滑动结束，触发判断
@@ -409,7 +397,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
 .stack {
   width: 100%;
   height: 100%;

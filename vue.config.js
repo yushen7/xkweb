@@ -1,8 +1,11 @@
 module.exports = {
   lintOnSave: false,
   devServer: {
-    port: 8080
-
-  },
-  publicPath: '/z'
+      proxy: {
+        '/api/*': {
+          target: 'http://kuoteo.com',
+          changeOrigin: true
+        }
+      }
+  }
 }

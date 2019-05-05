@@ -3,7 +3,6 @@
     <div class="stack-wrapper">
       <stack ref="stack" :stackinit="stackinit"></stack>
     </div>
-    <div class="fixed-bg"></div>
   </div>
 </template>
 <script>
@@ -44,9 +43,7 @@ export default {
     stack
   },
   methods: {
-    change() {
-      console.log(222);
-    },
+    change() {},
     prev() {
       this.$refs.stack.$emit('prev');
     },
@@ -56,7 +53,10 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
+.mid-center {
+  width: 100%;
+}
 .stack-wrapper {
   margin: 0 auto;
   margin-top: 50px;
@@ -99,13 +99,5 @@ export default {
   height: 0;
   color: transparent;
   display: block;
-}
-.fixed-bg {
-  background-color: #ffffff;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div class="Application">
     <application v-for="item in list" :key="item.id" :list="item"></application>
+    <div class="fixed-bg"></div>
   </div>
 </template>
 
@@ -47,20 +48,22 @@ export default {
         }
       ]
     };
-  },
-  computed: {},
-  methods: {},
-  beforeCreate: function() {
-    this.$nextTick(function() {
-      let html = document.getElementsByTagName('body')[0];
-      html.style.background = '#e8e8e8';
-    });
   }
 };
 </script>
 
 <style scoped>
+.fixed-bg {
+  background-color: #e2e2e2;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
 .Application {
+  width: 100%;
   margin: 0;
   padding: 0;
   background: #e8e8e8;

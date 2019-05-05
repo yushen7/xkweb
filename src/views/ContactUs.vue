@@ -2,43 +2,50 @@
   <div class="ctus">
     <div class="fixed-bg"></div>
     <main class="ctus-content">
-      <div class="content-item" v-for="(item,index) in items" :key="index">
+      <div class="content-item" v-for="(item, index) in items" :key="index">
         <div class="item-icon">
-          <img :src="item.icon" :alt="item.alt">
+          <img :src="item.icon" :alt="item.alt" />
         </div>
-        <p>{{item.content}}</p>
+        <p>{{ item.content }}</p>
       </div>
     </main>
     <footer class="copyright">
-      <p>{{flag}}</p>
+      <p>{{ flag }}</p>
     </footer>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ctus",
+  name: 'ctus',
   data() {
     return {
       items: [
         {
-          icon: require("@/assets/email.png"),
-          content: "xiaozhi_yx@kidultyx.com",
-          alt: "邮箱"
+          icon: require('@/assets/email.png'),
+          content: 'xiaozhi_yx@foxmail.com',
+          alt: '邮箱'
         },
         {
-          icon: require("@/assets/phone.png"),
-          content: "18312014102",
-          alt: "电话"
+          icon: require('@/assets/phone.png'),
+          content: '18312014102',
+          alt: '电话'
         },
         {
-          icon: require("@/assets/location.png"),
-          content: "华南理工大学广州学院行政楼801",
-          alt: "位置"
+          icon: require('@/assets/location.png'),
+          content: '华南理工大学广州学院行政楼801',
+          alt: '位置'
         }
       ],
-      flag: "星空学生创新中心| Copyright©2006-2019"
+      flag: '星空学生创新中心| Copyright©2006-2019'
     };
+  },
+  // beforeUpdate() {
+  //   this.$el.classList.remove('router-view');
+  //   console.log(this.$el.classList);
+  // },
+  beforeDestroy() {
+    this.$el.classList.add('router-view');
   }
 };
 </script>
@@ -48,22 +55,21 @@ export default {
 * {
   color: #ffffff;
 }
+.ctus {
+  width: 100%;
+}
 .fixed-bg {
   position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
-  z-index: -1;
-  background-image: url("../assets/ctus-bg.png");
+  background-image: url('../assets/ctus-bg.png');
   background-size: 100% 100%;
 }
-// html {
-//   background-image: url("../assets/ctus-bg.png");
-//   background-size: 100% 100%;
-//   height: 100%;
-// }
 main {
   margin-top: 22.48875562218891vh;
+  z-index: 100;
+  position: relative;
 }
 .content-item {
   padding-bottom: 2.998500749625187vh;
