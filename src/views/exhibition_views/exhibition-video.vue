@@ -128,7 +128,6 @@ export default {
   },
   created() {
     const url = '/videoshow';
-    const prefix = this.$prefixUrl;
     this.$http
       .get(url)
       .then(res => {
@@ -145,21 +144,21 @@ export default {
             sources: [
               {
                 type: 'video/mp4',
-                src: prefix + item[0].url
+                src: item[0].url
               }
             ],
-            poster: prefix + item[0].media_path,
+            poster: item[0].media_path,
             playsinline: true,
             aspectRatio: '16:9',
             nativeControlsForTouch: true
           });
         });
         for (let i of this.videoHeaders) {
-          i[0].media_path = prefix + i[0].media_path;
+          i[0].media_path = i[0].media_path;
         }
         for (let i of this.videoJumps) {
           for (let j of i) {
-            j.media_path = prefix + j.media_path;
+            j.media_path = j.media_path;
           }
         }
       })

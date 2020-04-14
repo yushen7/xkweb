@@ -5,8 +5,8 @@
         <swiper :options="swpOption" ref="hswp">
           <swiper-slide
             class="hp-banner-slide-item"
-            v-for="(item, index) in bannerData"
-            :key="index"
+            v-for="item in bannerData"
+            :key="item.url"
           >
             <a :href="item.url">
               <img :src="item.img_path" :alt="item.title" />
@@ -76,46 +76,7 @@ export default {
       },
       bannerData: [],
       isImgsReady: false,
-      itemList: [
-        // {
-        //   title: '组织介绍',
-        //   s_title: '小星空，大梦想，加入我们快速成长',
-        //   url:'',
-        //   img_path: require('@/assets/org-intro.png'),
-        //   hover: false
-        // },
-        // {
-        //   title: '作品展',
-        //   s_title: '视频、海报、周边、照片，你想要的应有尽有',
-        //   url:'',
-        //   img_path: require('@/assets/piece-show.png'),
-        //   hover: false
-        // },
-        // {
-        //   title: '产品介绍',
-        //   s_title: 'APP改变校园生活',
-        //   url:'',
-        //   img_path: require('@/assets/pro-intro.png'),
-        //   hover: false
-        // },
-        // {
-        //   title: '推文',
-        //   s_title: '懂你更多',
-        //   url:'',
-        //   img_path: require('@/assets/ad-article.png'),
-        //   hover: false
-        // },
-        // {
-        //   title: {
-        //     en: 'CONTACT US',
-        //     zh_cn: '联系我们'
-        //   },
-        //   s_title: '点击联系我们，寻求组织合作',
-        //   url:'',
-        //   img_path: require('@/assets/ctus.png'),
-        //   hover: true
-        // }
-      ],
+      itemList: [],
       subPagesPath: [
         '/orgIntro',
         '/exhibition_views/exhibition-vision',
@@ -128,27 +89,16 @@ export default {
   },
   beforeCreate() {
     const url = '/homepageshow';
-    const prefix = this.$prefixUrl;
     this.$http.get(url).then(res => {
       const banner = res.data.homebanner;
       const content = res.data.homecontent;
-      console.log(this.$prefixUrl);
       this.bannerData = banner;
       this.itemList = content;
-      if (!prefix) {
-        for (let i of content) {
-          this.itemList[this.itemList.length - 1].hover = false;
-        }
-      } else {
-        for (let i of banner) {
-          i.img_path = prefix + i.img_path;
-        }
-        for (let i of content) {
-          i.img_path = prefix + i.img_path;
-          i.hover = false;
-        }
-        //最后一个的数据貌似不同
-      }
+
+    for (let i of content) {
+      this.itemList[this.itemList.length - 1].hover = false;
+    }
+
       this.itemList[this.itemList.length - 1].hover = true;
       this.itemList[this.itemList.length - 1].en = 'CONTACT US';
       this.isImgsReady = true;

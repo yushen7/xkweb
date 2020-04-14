@@ -96,7 +96,6 @@ export default {
         this.imageOnLoadCount = 0;
         this.loading = false;
       }
-      console.log(this.imageOnLoadCount);
     },
     ontouchstart(e) {
       if (!this.rendFlag) {
@@ -147,13 +146,12 @@ export default {
     },
     ajax() {
       const url = '/photoshow';
-      const prefix = this.$prefixUrl;
       this.$http.get(url).then(res => {
         const photos = res.data.photo;
         for (let i of photos) {
-          i.thum_header = prefix + i.thum_header;
-          i.thumbnail = prefix + i.thumbnail;
-          i.media_path = prefix + i.media_path;
+          i.thum_header =  i.thum_header;
+          i.thumbnail =  i.thumbnail;
+          i.media_path =  i.media_path;
           this.preview.images.push(i.media_path);
         }
         this.tmpPhotos = photos;

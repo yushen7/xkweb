@@ -10,13 +10,15 @@ import {
   Loading
 } from "element-ui";
 import VuePreview from 'vue-preview';
-import env from './utilities/detectEnv.js';
 //引入vant组件库
 import {
   Lazyload
 } from 'vant';
 import 'vant/lib/image-preview/style';
 import ImagePreview from 'vant/lib/image-preview';
+
+
+
 Vue.use(VuePreview, {
   mainClass: 'pswp--minimal--dark',
   barsSize: {
@@ -39,10 +41,10 @@ Vue.use(ImagePreview);
 Vue.use(Menu);
 Vue.use(MenuItem);
 Vue.use(VueAwesomeSwiper);
+
 Vue.config.productionTip = false;
-axios.defaults.baseURL = env.baseUrl;
+axios.defaults.baseURL = process.env.VUE_APP_PREFIX_API;
 Vue.prototype.$http = axios;
-Vue.prototype.$prefixUrl = env.prefixUrl;
 new Vue({
   router,
   render: h => h(App)
