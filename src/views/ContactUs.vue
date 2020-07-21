@@ -23,12 +23,12 @@ export default {
       items: [
         {
           icon: require('@/assets/email.png'),
-          content: 'xiaozhi_yx@foxmail.com',
+          content: '2050295405@qq.com',
           alt: '邮箱'
         },
-        {
+        { 
           icon: require('@/assets/phone.png'),
-          content: '18312014102',
+          content: '13729213201',
           alt: '电话'
         },
         {
@@ -37,7 +37,7 @@ export default {
           alt: '位置'
         }
       ],
-      flag: '星空学生创新中心| Copyright©2006-2019'
+      flag: '星空学生创新中心| Copyright©2006-2020'
     };
   },
   // beforeUpdate() {
@@ -50,7 +50,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
 //根据窗口宽度做了一下适配 1vh = 1窗口高度/100
 * {
   color: #ffffff;

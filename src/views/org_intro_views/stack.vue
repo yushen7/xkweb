@@ -197,7 +197,7 @@ export default {
           ? true
           : false;
 
-      if (!isMovedX & !isMovedY && isFast) {
+      if (!isMovedX && !isMovedY && isFast) {
         this.choose(this.temporaryData.currentPage);
         return;
       }
@@ -397,7 +397,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
 .stack {
   width: 100%;
   height: 100%;

@@ -109,7 +109,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
 .org-introduction {
   background-color: #ffffff;
 }

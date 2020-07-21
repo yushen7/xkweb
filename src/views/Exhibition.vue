@@ -51,7 +51,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="stylus">
 .exhibition {
   width: 100%;
   background-color: #ffffff;

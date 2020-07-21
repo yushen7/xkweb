@@ -171,48 +171,47 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-$mg-lr: 4.5%;
-img {
-  display: block;
-}
-.phg-one {
-  width: 96%;
-}
-.phg-list {
-  column-count: 2;
-  column-gap: $mg-lr;
-}
+<style lang="stylus" scoped>
+img
+  display block
+
+.phg-one
+  width 96%
+
+.phg-list
+  column-count 2
+  column-gap 4.5%
+
 .phg-one,
-.phg-list-item {
-  box-shadow: 4px 4px 4px #eee;
-  margin: 10px 0;
-  border-radius: 10px;
-}
-.phg-list-item {
-  box-sizing: border-box;
-  break-inside: avoid;
-  transition: all 0.3s ease-in-out;
-  overflow: hidden;
-  .item-info {
-    img {
-      width: 23px;
-      height: 23px;
-      padding: 0 5px;
-      float: left;
-      border-radius: 100%;
-    }
-    p {
-      text-align: left;
-      line-height: 75%;
-      font-size: 0.75rem;
-    }
-  }
-  .item-img-wrapper {
-    img {
-      width: 100%;
-    }
-  }
-}
+.phg-list-item
+  box-shadow 4px 4px 4px #eee
+  margin 10px 0
+  border-radius 10px
+
+.phg-list-item
+  box-sizing border-box
+  break-inside avoid
+  transition all 0.3s ease-in-out
+  overflow hidden
+  .item-info
+    img
+      width 23px
+      height 23px
+      padding 0 5px
+      float left
+      border-radius 100%
+
+    p
+      text-align left
+      line-height 75%
+      font-size 0.75rem
+
+
+  .item-img-wrapper
+    img
+      width: 100%
+
+
+
 </style>
 

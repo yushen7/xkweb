@@ -53,7 +53,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
 .mid-center {
   width: 100%;
 }
@@ -72,8 +72,8 @@ export default {
   position: relative;
   width: 200px;
   text-align: center;
-  display: flex; /*Flex布局*/
   display: -webkit-flex; /* Safari */
+  display: flex; /*Flex布局*/
   justify-content: space-around;
   margin: 0 auto;
   margin-top: 50px;

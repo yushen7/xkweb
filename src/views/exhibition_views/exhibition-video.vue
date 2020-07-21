@@ -66,7 +66,7 @@
             <div class="video-history hsy-list">
               <div
                 class="hsy-item"
-                v-for="(item, index) in videoJumps[0]"
+                v-for="(item, index) in videoJumps[currentIndex]"
                 :key="index"
               >
                 <div class="hsy-item-img-wrapper">
@@ -131,6 +131,7 @@ export default {
     this.$http
       .get(url)
       .then(res => {
+        console.log(res)
         this.videoHeaders = res.data.video.videoheader;
         this.videoIngs = res.data.video.videoing;
         this.videoJumps = res.data.video.videojump;
@@ -153,14 +154,6 @@ export default {
             nativeControlsForTouch: true
           });
         });
-        for (let i of this.videoHeaders) {
-          i[0].media_path = i[0].media_path;
-        }
-        for (let i of this.videoJumps) {
-          for (let j of i) {
-            j.media_path = j.media_path;
-          }
-        }
       })
       .catch(err => {
         console.log(err);
@@ -191,114 +184,114 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.author-info {
-  display: flex;
-  text-align: left;
-  .author-info-avatar {
-    width: 44px;
-    height: 44px;
-    margin-right: 5%;
-    border-radius: 20px;
-    border: 1px solid #eee;
-    margin-top: 15px;
-    background-size: cover;
-    background-position: center center;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .author-info-content {
-    p:nth-child(1) {
-      font-size: 1rem;
-      line-height: 95%;
-    }
-    p:nth-child(2) {
-      font-size: 0.75rem;
-      color: #bbb;
-      line-height: 50%;
-    }
-  }
-}
-.video-info {
-  border-bottom: 1.2px solid #eee;
-}
-.video-intro {
-  text-align: left;
-  .video-intro-title {
-    font-size: 1rem;
-  }
-  .video-intro-content {
-    font-size: 0.75rem;
-    line-height: 2;
-  }
-}
-.hsy-list {
-  text-align: left;
-}
-.hsy-item {
-  margin: 5px auto;
-  height: 80px;
-  display: flex;
-}
-.hsy-item-img-wrapper {
-  box-sizing: border-box;
-  width: 35%;
-  height: 66px;
-  padding-right: 5%;
-  a {
-    img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      border-radius: 10px;
-    }
-  }
-}
-.hsy-item-content {
-  position: relative;
-  width: 65%;
-  font-size: 0.75rem;
-  border-bottom: 1.2px solid #eee;
-  p {
-    margin-top: 5px;
-  }
-}
-.hsy-item-tag {
-  display: flex;
-  position: absolute;
-  bottom: 5px;
-  span {
-    font-size: 0.75rem;
-    color: #3a8ffc;
-    border: 1px solid #3a8ffc;
-    border-radius: 5px;
-    padding: 3px 5px;
-  }
-}
-.ex-video-banner {
-  padding: 12px 0;
-}
-.banner-video-wrapper {
-  display: inline-block;
-  width: 100%;
-}
-.swiper-slide {
-  video {
-    border-radius: 20px;
-  }
-  transition: all 0.5s ease-in-out;
-}
-.swiper-slide:not(.swiper-slide-active) {
-  transform: scale(0.8);
-}
-.video-palyer-box {
-  border-radius: 15px;
-  overflow: hidden;
-}
+<style lang="stylus" scoped>
+.author-info
+  display flex
+  text-align left
+  .author-info-avatar
+    width 44px
+    height 44px
+    margin-right 5%
+    border-radius 20px
+    border 1px solid #eee
+    margin-top 15px
+    background-size cover
+    background-position center center
+    img
+      width 100%
+      height 100%
+
+
+  .author-info-content
+    p:nth-child(1)
+      font-size 1rem
+      line-height 95%
+
+    p:nth-child(2)
+      font-size 0.75rem
+      color #bbb
+      line-height 50%
+
+
+
+.video-info
+  border-bottom 1.2px solid #eee
+
+.video-intro
+  text-align left
+  .video-intro-title
+    font-size 1rem
+
+  .video-intro-content
+    font-size 0.75rem
+    line-height 2
+
+
+.hsy-list
+  text-align left
+
+.hsy-item
+  margin 5px auto
+  height 80px
+  display flex
+
+.hsy-item-img-wrapper
+  box-sizing border-box
+  width 35%
+  height 66px
+  padding-right 5%
+  a
+    img
+      width 100%
+      height 100%
+      display block
+      border-radius 10px
+
+
+
+.hsy-item-content
+  position relative
+  width 65%
+  font-size 0.75rem
+  border-bottom 1.2px solid #eee
+  p
+    margin-top 5px
+
+
+.hsy-item-tag
+  display flex
+  position absolute
+  bottom 5px
+  span
+    font-size 0.75rem
+    color #3a8ffc
+    border 1px solid #3a8ffc
+    border-radius 5px
+    padding 3px 5px
+
+
+.ex-video-banner
+  padding 12px 0
+
+.banner-video-wrapper
+  display inline-block
+  width 100%
+
+.swiper-slide
+  video
+    border-radius 20px
+
+  transition all 0.5s ease-in-out
+
+.swiper-slide:not(.swiper-slide-active)
+  transform scale(0.8)
+
+.video-palyer-box
+  border-radius 15px
+  overflow hidden
+
 .swiper-prev,
-.swiper-next {
-  outline: none;
-}
+.swiper-next
+  outline none
+
 </style>

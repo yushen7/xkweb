@@ -95,6 +95,7 @@ export default {
       this.bannerData = banner;
       this.itemList = content;
 
+      console.log(res)
     for (let i of content) {
       this.itemList[this.itemList.length - 1].hover = false;
     }
@@ -119,7 +120,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="stylus">
 // .fixed-bg {
 //   background-color: #e2e2e2;
 //   position: fixed;
